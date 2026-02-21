@@ -5,9 +5,10 @@ import type { Movie } from "@/data/movies";
 interface MovieCardProps {
   movie: Movie;
   index: number;
+  onClick?: () => void;
 }
 
-const MovieCard = ({ movie, index }: MovieCardProps) => {
+const MovieCard = ({ movie, index, onClick }: MovieCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -16,6 +17,7 @@ const MovieCard = ({ movie, index }: MovieCardProps) => {
       style={{ animationDelay: `${index * 50}ms` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       <div className="relative overflow-hidden rounded-sm">
         <img
@@ -28,16 +30,16 @@ const MovieCard = ({ movie, index }: MovieCardProps) => {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent flex flex-col justify-end p-3 animate-fade-in">
             <p className="text-foreground text-sm font-semibold truncate">{movie.title}</p>
             <div className="flex items-center gap-2 mt-2">
-              <button className="w-7 h-7 rounded-full bg-foreground flex items-center justify-center hover:bg-foreground/80 transition-colors">
+              <button className="w-7 h-7 rounded-full bg-foreground flex items-center justify-center hover:bg-foreground/80 transition-colors" onClick={(e) => e.stopPropagation()}>
                 <Play className="w-3.5 h-3.5 text-background fill-current" />
               </button>
-              <button className="w-7 h-7 rounded-full border border-muted-foreground/50 flex items-center justify-center hover:border-foreground transition-colors">
+              <button className="w-7 h-7 rounded-full border border-muted-foreground/50 flex items-center justify-center hover:border-foreground transition-colors" onClick={(e) => e.stopPropagation()}>
                 <Plus className="w-3.5 h-3.5 text-foreground" />
               </button>
-              <button className="w-7 h-7 rounded-full border border-muted-foreground/50 flex items-center justify-center hover:border-foreground transition-colors">
+              <button className="w-7 h-7 rounded-full border border-muted-foreground/50 flex items-center justify-center hover:border-foreground transition-colors" onClick={(e) => e.stopPropagation()}>
                 <ThumbsUp className="w-3.5 h-3.5 text-foreground" />
               </button>
-              <button className="w-7 h-7 rounded-full border border-muted-foreground/50 flex items-center justify-center hover:border-foreground transition-colors ml-auto">
+              <button className="w-7 h-7 rounded-full border border-muted-foreground/50 flex items-center justify-center hover:border-foreground transition-colors ml-auto" onClick={(e) => { e.stopPropagation(); onClick?.(); }}>
                 <ChevronDown className="w-3.5 h-3.5 text-foreground" />
               </button>
             </div>

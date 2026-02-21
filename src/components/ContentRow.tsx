@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
 import MovieCard from "./MovieCard";
+import MovieDetailModal from "./MovieDetailModal";
 import type { Movie } from "@/data/movies";
 
 interface ContentRowProps {
@@ -11,6 +12,7 @@ interface ContentRowProps {
 const ContentRow = ({ title, movies }: ContentRowProps) => {
   const rowRef = useRef<HTMLDivElement>(null);
   const [showLeft, setShowLeft] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const scroll = (direction: "left" | "right") => {
     if (!rowRef.current) return;
@@ -47,7 +49,12 @@ const ContentRow = ({ title, movies }: ContentRowProps) => {
           className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth"
         >
           {movies.map((movie, i) => (
-            <MovieCard key={movie.id} movie={movie} index={i} />
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              index={i}
+              onClick={() => setSelectedMovie(movie)}
+            />
           ))}
         </div>
         <button
@@ -57,6 +64,12 @@ const ContentRow = ({ title, movies }: ContentRowProps) => {
           <ChevronRight className="w-6 h-6 text-foreground" />
         </button>
       </div>
+
+      <MovieDetailModal
+        movie={selectedMovie}
+        open={!!selectedMovie}
+        onOpenChange={(open) => !open && setSelectedMovie(null)}
+      />
     </section>
   );
 };
